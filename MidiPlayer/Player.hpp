@@ -36,7 +36,6 @@ public:
     void playSongLine(SongLine* songLine, int tempo, double volume);
     void playSong(Song& song);
     static float calcChordDuration(float value, int tempo);
-    Song parseMidi();
     void playTestSongLine(std::unordered_map<int, Chord> songLine, std::unordered_map<int, Chord> songLine2,  Synthesizer &synth);
 };
 

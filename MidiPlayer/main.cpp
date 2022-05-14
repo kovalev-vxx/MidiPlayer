@@ -61,9 +61,9 @@ int main(int argc, char const** argv)
 
     
     Player player = Player();
-    MidiParser parser = MidiParser("res/BOURREE-1.mid");
-    std::unordered_map<int, Chord> start = std::move(std::get<0>(parser.testParser()));
-    std::unordered_map<int, Chord> end = std::move(std::get<1>(parser.testParser()));
+    MidiParser parser = MidiParser("res/MOON.mid");
+    std::unordered_map<int, Chord> start = std::get<0>(parser.testParser());
+    std::unordered_map<int, Chord> end = std::get<1>(parser.testParser());
     
 
     // Start the game loop
@@ -96,7 +96,10 @@ int main(int argc, char const** argv)
 
         if (player.isPlaying()){
             std::string title = "NOW PLAYING";
-            player.playTestSongLine(start, end, synth);
+            std::thread t2([&](){
+                player.playTestSongLine(start, end, synth);
+            });
+            t2.join();
             text.setString(title);
             
         } else {

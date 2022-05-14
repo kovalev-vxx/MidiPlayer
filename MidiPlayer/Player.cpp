@@ -91,42 +91,16 @@ void Player::playSong(Song& song){
     }
 }
 
-Song Player::parseMidi(){
-    smf::MidiFile midifile;
-    midifile.read("TEST.mid");
-    std::cout << midifile.getFilename() << " MIDI!!!" << std::endl;
-    
-    midifile.doTimeAnalysis();
-    midifile.linkNotePairs();
-
-       int tracks = midifile.getTrackCount();
-       int track = 1;
-       for (int i=0; i<midifile[track].size(); i++) {
-          if (!midifile[track][i].isNoteOn()) {
-              std::cout << "OFF " << midifile[track][i].tick << " " << midifile[track][i].getDurationInSeconds()
-                   << '\t' << (int)midifile[track][i][1]
-                   << std::endl;
-          } else {
-              std::cout << "ON " << midifile[track][i].tick << " " << midifile[track][i].getDurationInSeconds()
-                   << '\t' << (int)midifile[track][i][1]
-                   << std::endl;
-          }
-          
-       }
-}
-
-
 
 void Player::playTestSongLine(std::unordered_map<int, Chord> songLine, std::unordered_map<int, Chord> songLine2, Synthesizer &synth){
-    Chord c1 = std::move(songLine[getTime()]);
+    Chord c1 = songLine[getTime()];
     
     if(c1.getDuration()){
-        std::cout << songLine.size() << std::endl;
         synth.playOn(c1);
         
     }
     std::thread t([&](){
-        Chord c2 = std::move(songLine2[getTime()]);
+        Chord c2 = songLine2[getTime()];
         if(c2.getDuration()){
             synth.playOff(c2);
         }
